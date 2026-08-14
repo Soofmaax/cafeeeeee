@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import CartDrawer from '@/components/CartDrawer';
 import { supabase } from '@/lib/supabase';
 import type { SearchProduct } from '@/components/SearchBar';
+import { features } from '@/lib/features';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const cormorant = Cormorant_Garamond({
@@ -22,6 +23,8 @@ export const metadata: Metadata = {
 };
 
 async function getSearchProducts(): Promise<SearchProduct[]> {
+  if (!features.supabase) return [];
+
   const { data } = await supabase
     .from('products')
     .select('id, slug, name, category, origin, aromatic_notes, image, price_cents')

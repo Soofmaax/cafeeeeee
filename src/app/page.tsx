@@ -1,4 +1,5 @@
 import { supabase, type Product } from '@/lib/supabase';
+import { features } from '@/lib/features';
 import ProductCard from '@/components/ProductCard';
 import StoresSection from '@/components/StoresSection';
 import { OFFICIAL_STORES } from '@/data/stores';
@@ -51,10 +52,10 @@ const CERTIFICATIONS = [
 ];
 
 export default async function HomePage() {
-  const { data: allProducts } = await supabase
+  const { data: allProducts } = features.supabase ? await supabase
     .from('products')
     .select('*')
-    .order('created_at', { ascending: true });
+    .order('created_at', { ascending: true }) : { data: [] };
 
   const products = (allProducts ?? []) as Product[];
   const featured = products.slice(0, 4);
