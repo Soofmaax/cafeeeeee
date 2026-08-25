@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { rateLimit, getClientIP } from '@/lib/rate-limit';
+import { features } from '@/lib/features';
 
 export async function GET(req: NextRequest) {
+  if (!features.supabase) {
+    return NextResponse.json({ error: 'Commandes indisponibles en mode aperçu.' }, { status: 503 });
+  }
+
   const ip = getClientIP(req);
   const { allowed } = rateLimit(ip, 15, 60_000);
   if (!allowed) {
