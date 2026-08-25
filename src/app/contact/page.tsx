@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, Mail, Phone, MapPin, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/contact' },
   title: 'Contact — Café de Papá',
   description:
     "Contactez Café de Papá (FINCA LA CAMPINA SARL) : e-mail, téléphone et adresse de notre brûlerie au 1 Rue du Poteau, 75018 Paris.",
@@ -13,12 +14,16 @@ const CONTACT_ITEMS = [
     icon: Mail,
     label: 'E-mail',
     value: 'cafefincalacampina@outlook.fr',
-    href: 'mailto:cafefincalacampina@outlook.fr',
+    links: [{ value: 'cafefincalacampina@outlook.fr', href: 'mailto:cafefincalacampina@outlook.fr' }],
   },
   {
     icon: Phone,
     label: 'Téléphone',
     value: '01 46 06 51 75 / 06 99 76 12 76',
+    links: [
+      { value: '01 46 06 51 75', href: 'tel:+33146065175' },
+      { value: '06 99 76 12 76', href: 'tel:+33699761276' },
+    ],
   },
   {
     icon: MapPin,
@@ -62,13 +67,20 @@ export default function ContactPage() {
               <p className="text-xs font-semibold uppercase tracking-wider text-accent-600">
                 {item.label}
               </p>
-              {item.href ? (
-                <a
-                  href={item.href}
-                  className="mt-1 block text-sm text-ink-700 underline underline-offset-2 hover:text-ink-900"
-                >
-                  {item.value}
-                </a>
+              {item.links ? (
+                <div className="mt-1 flex flex-wrap gap-x-2 text-sm">
+                  {item.links.map((link, linkIndex) => (
+                    <span key={link.href}>
+                      {linkIndex > 0 && <span className="mr-2 text-ink-400">/</span>}
+                      <a
+                        href={link.href}
+                        className="text-ink-700 underline underline-offset-2 hover:text-ink-900"
+                      >
+                        {link.value}
+                      </a>
+                    </span>
+                  ))}
+                </div>
               ) : (
                 <p className="mt-1 text-sm leading-relaxed text-ink-700">{item.value}</p>
               )}

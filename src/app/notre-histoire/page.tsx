@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/notre-histoire' },
   title: 'Notre Histoire — Café de Papá',
   description:
     "L'histoire d'Amélia Flores et de son père Walter Flores, fondateur de la Finca La Campiña au Pérou. Du champ familial jusqu'à la brûlerie parisienne : un pont direct, sans intermédiaire.",
@@ -47,7 +48,7 @@ const TIMELINE = [
     icon: Flame,
     year: 'Paris 18e',
     title: 'La brûlerie de la Rue du Poteau',
-    text: "Amélia installe sa première brûlerie au 1 Rue du Poteau, dans le 18e arrondissement de Paris. Là, chaque lot est torréfié lentement, en petites quantités, puis expédié frais sous 4 jours ouvrés. La mouture se fait à la commande — jamais à l'avance.",
+    text: "Amélia installe sa première brûlerie au 1 Rue du Poteau, dans le 18e arrondissement de Paris. Là, chaque lot est torréfié lentement, en petites quantités, puis préparé sous 4 jours ouvrés. La mouture se fait à la commande, jamais à l'avance.",
   },
 ];
 
@@ -120,7 +121,7 @@ export default function NotreHistoirePage() {
           <h1 className="mt-4 font-serif text-4xl font-medium leading-tight text-ink-50 sm:text-5xl">
             Du champ de son père
             <br />
-            <span className="italic text-accent-400">jusqu'à votre tasse parisienne</span>
+            <span className="italic text-accent-400">jusqu&apos;à votre tasse parisienne</span>
           </h1>
         </div>
       </section>
@@ -133,8 +134,8 @@ export default function NotreHistoirePage() {
           </div>
           <blockquote className="relative">
             <p className="font-serif text-xl font-medium leading-relaxed text-ink-800 sm:text-2xl">
-              Le Café de Papá est bien plus qu'un simple café. C'est un lieu où la passion se mêle
-              à l'engagement pour la qualité et l'authenticité. Fondé en hommage à Walter Flores,
+              Le Café de Papá est bien plus qu&apos;un simple café. C&apos;est un lieu où la passion se mêle
+              à l&apos;engagement pour la qualité et l&apos;authenticité. Fondé en hommage à Walter Flores,
               notre café puise ses racines au cœur de notre exploitation familiale Finca La Campiña,
               dans la province de Chanchamayo au Pérou.
             </p>
@@ -173,7 +174,7 @@ export default function NotreHistoirePage() {
             notre atelier de la Rue du Poteau, nous torréfions chaque lot lentement, en petites
             quantités, pour révéler des arômes uniques — du chocolat noir du Pérou aux notes
             florales de jasmin d&apos;Éthiopie. Chaque paquet est torréfié à la commande,
-            puis expédié frais sous 4 jours ouvrés.
+            puis préparé sous 4 jours ouvrés.
           </p>
           <p>
             C&apos;est ça, Café de Papá : pas d&apos;intermédiaire, pas de compromis. Juste
@@ -192,8 +193,8 @@ export default function NotreHistoirePage() {
             Engagement Torréfaction &amp; Fraîcheur
           </p>
           <p className="mt-6 font-serif text-xl font-medium leading-relaxed text-ink-100 sm:text-2xl">
-            Nous vous offrons bien plus qu'une simple tasse : une expérience gustative
-            d'exception, méticuleusement façonnée à partir des grains les plus nobles.
+            Nous vous offrons bien plus qu&apos;une simple tasse : une expérience gustative
+            d&apos;exception, méticuleusement façonnée à partir des grains les plus nobles.
             Torréfaction précise à Paris 18e, fraîcheur garantie sous 4 jours ouvrés et
             amour du terroir péruvien à chaque gorgée.
           </p>
@@ -205,7 +206,7 @@ export default function NotreHistoirePage() {
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-accent-600">
-              L'expertise d'Amélia
+              L&apos;expertise d&apos;Amélia
             </p>
             <h2 className="mt-3 font-serif text-3xl font-medium text-ink-900 sm:text-4xl">
               Les chiffres clés de la maison
@@ -236,7 +237,7 @@ export default function NotreHistoirePage() {
             Distinctions professionnelles
           </p>
           <h2 className="mt-3 font-serif text-3xl font-medium text-ink-900 sm:text-4xl">
-            Les certifications d'Amélia Flores
+            Les certifications d&apos;Amélia Flores
           </h2>
         </div>
         <div className="grid gap-6 sm:grid-cols-2">
@@ -315,7 +316,7 @@ export default function NotreHistoirePage() {
         </p>
         <Link
           href="/cafes"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-ink-900 px-8 py-4 text-sm font-semibold uppercase tracking-wider text-ink-50 transition-colors hover:bg-ink-800"
+          className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-ink-900 px-8 py-4 text-sm font-semibold uppercase tracking-wider text-ink-50 transition-colors hover:bg-ink-800"
         >
           Découvrir nos cafés
           <ArrowRight size={16} />

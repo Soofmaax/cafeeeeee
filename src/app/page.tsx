@@ -1,10 +1,13 @@
-import { supabase, type Product } from '@/lib/supabase';
+import { getSupabaseClient, type Product } from '@/lib/supabase';
 import ProductCard from '@/components/ProductCard';
 import StoresSection from '@/components/StoresSection';
 import { OFFICIAL_STORES } from '@/data/stores';
 import Link from 'next/link';
 import { ArrowRight, Flame, Truck, Store, Clock, Sprout, Award, Users, Medal, TreePine } from 'lucide-react';
 import Footer from '@/components/Footer';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 const HERO_IMAGE = 'https://images.pexels.com/photos/38213574/pexels-photo-38213574.jpeg?auto=compress&cs=tinysrgb&w=1920';
 const STORY_IMAGE = 'https://images.pexels.com/photos/36040333/pexels-photo-36040333.jpeg?auto=compress&cs=tinysrgb&w=1200';
@@ -40,7 +43,7 @@ const CATEGORY_CARDS = [
 const REASSURANCE_ITEMS = [
   { icon: Flame, text: 'Torréfié à la commande sous 4 jours ouvrés' },
   { icon: Sprout, text: 'Direct producteur Pérou' },
-  { icon: Store, text: 'Retrait Paris 18e ou Mondial Relay offert dès 45 €' },
+  { icon: Store, text: 'Click & Collect gratuit à Paris 18e' },
 ];
 
 const CERTIFICATIONS = [
@@ -51,10 +54,10 @@ const CERTIFICATIONS = [
 ];
 
 export default async function HomePage() {
-  const { data: allProducts } = await supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: true });
+  const supabase = getSupabaseClient();
+  const { data: allProducts } = supabase
+    ? await supabase.from('products').select('*').order('created_at', { ascending: true })
+    : { data: [] };
 
   const products = (allProducts ?? []) as Product[];
   const featured = products.slice(0, 4);
@@ -270,7 +273,7 @@ export default async function HomePage() {
               Distinctions professionnelles
             </p>
             <h2 className="mt-3 font-serif text-2xl font-medium text-ink-900 sm:text-3xl">
-              Les certifications d'Amélia Flores
+              Les certifications d&apos;Amélia Flores
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
