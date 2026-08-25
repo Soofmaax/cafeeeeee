@@ -4,11 +4,10 @@ import { z } from 'zod';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import { rateLimit, getClientIP } from '@/lib/rate-limit';
 import type { Product, ProductVariation } from '@/lib/supabase';
+import { features } from '@/lib/features';
 
 const MONDIAL_RELAY_COST_CENTS = 450;
 const FREE_SHIPPING_THRESHOLD_CENTS = 4500;
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 const itemSchema = z.object({
   productId: z.string().min(1),
@@ -35,6 +34,14 @@ const checkoutSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  if (!features.stripe || !features.supabase) {
+    return NextResponse.json(
+      { error: 'Le paiement est désactivé pendant le mode aperçu.' },
+      { status: 503 },
+    );
+  }
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   const ip = getClientIP(req);
   const { allowed } = rateLimit(ip, 10, 60_000);
   if (!allowed) {

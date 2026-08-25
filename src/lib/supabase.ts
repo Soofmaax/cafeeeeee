@@ -1,7 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
+import { features } from '@/lib/features';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Valid local placeholders keep the application importable in preview mode. No
+// request is made by application pages while the Supabase feature is disabled.
+const supabaseUrl = features.supabase
+  ? process.env.NEXT_PUBLIC_SUPABASE_URL!
+  : 'http://127.0.0.1:54321';
+const supabaseAnonKey = features.supabase
+  ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  : 'preview-mode-no-key';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
