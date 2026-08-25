@@ -1,14 +1,20 @@
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import OrderSuccessClient from './OrderSuccessClient';
 
 export const dynamic = 'force-dynamic';
+export const metadata: Metadata = {
+  title: 'Confirmation de commande, Café de Papá',
+  description: 'Confirmation sécurisée de votre commande Café de Papá.',
+  robots: { index: false, follow: false },
+};
 
 export default function OrderSuccessPage({
   searchParams,
 }: {
-  searchParams: { session_id?: string };
-}) {
-  if (!searchParams.session_id) notFound();
+    searchParams: { order_token?: string };
+  }) {
+  if (!searchParams.order_token) notFound();
 
-  return <OrderSuccessClient sessionId={searchParams.session_id} />;
+  return <OrderSuccessClient orderToken={searchParams.order_token} />;
 }
