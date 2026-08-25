@@ -3,12 +3,16 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/mentions-legales' },
   title: 'Mentions Légales — Café de Papá',
   description:
     "Mentions légales de Café de Papá, exploité par FINCA LA CAMPINA SARL : éditeur, hébergement, coordonnées et contact.",
 };
 
 export default function LegalMentionsPage() {
+  const hostName = process.env.LEGAL_HOST_NAME || 'Hébergeur de la prévisualisation';
+  const hostAddress = process.env.LEGAL_HOST_ADDRESS || 'Adresse à renseigner avant la mise en production';
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <Link
@@ -75,7 +79,7 @@ export default function LegalMentionsPage() {
         <section>
           <h2 className="font-serif text-xl font-medium text-ink-900">Hébergement</h2>
           <p className="mt-2">
-            Le site est hébergé par Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.
+            Le site est hébergé par {hostName}, {hostAddress}.
           </p>
         </section>
 

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/politique-de-confidentialite' },
   title: 'Politique de Confidentialité — Café de Papá',
   description: 'RGPD : utilisation de vos données personnelles pour la livraison et le suivi de commande.',
 };
@@ -27,8 +28,9 @@ export default function PrivacyPage() {
         <section>
           <h2 className="font-serif text-xl font-medium text-ink-900">Responsable du traitement</h2>
           <p className="mt-2">
-            Le responsable du traitement des données est Café de Papá, 14 rue des Caféiers,
-            75011 Paris. Pour toute question, contactez-nous à commandes@cafedepapa.fr.
+            Le responsable du traitement est FINCA LA CAMPINA SARL, enseigne Café de Papá,
+            1 Rue du Poteau, 75018 Paris. Pour toute question, utilisez l&apos;adresse
+            cafefincalacampina@outlook.fr.
           </p>
         </section>
 
@@ -41,7 +43,7 @@ export default function PrivacyPage() {
             <li>Nom et prénom</li>
             <li>Adresse e-mail</li>
             <li>Numéro de téléphone</li>
-            <li>Adresse de livraison (point relais ou boutique)</li>
+            <li>Boutique de retrait</li>
             <li>Historique des commandes</li>
           </ul>
         </section>
@@ -52,14 +54,15 @@ export default function PrivacyPage() {
             Vos données sont utilisées exclusivement pour :
           </p>
           <ul className="mt-2 list-disc space-y-1 pl-6">
-            <li>Traiter et expédier votre commande</li>
-            <li>Vous informer du suivi de votre livraison (e-mail et SMS)</li>
+            <li>Traiter et préparer votre commande</li>
+            <li>Vous envoyer la confirmation de paiement par e-mail</li>
+            <li>Vous prévenir par e-mail lorsque la commande est prête au retrait</li>
             <li>Assurer le service client en cas de question ou de litige</li>
           </ul>
           <p className="mt-2">
             Café de Papá ne revend ni ne cède vos données personnelles à des tiers à des
             fins commerciales. Les données sont uniquement transmises à nos prestataires
-            techniques (Stripe pour le paiement, Mondial Relay pour la livraison) dans la
+            techniques (Stripe pour le paiement et Resend pour les e-mails) dans la
             mesure strictement nécessaire à l&apos;exécution de votre commande.
           </p>
         </section>
@@ -88,7 +91,7 @@ export default function PrivacyPage() {
             <li>Droit d&apos;opposition au traitement</li>
           </ul>
           <p className="mt-2">
-            Pour exercer ces droits, contactez-nous à commandes@cafedepapa.fr. Vous
+            Pour exercer ces droits, contactez-nous à cafefincalacampina@outlook.fr. Vous
             pouvez également introduire une réclamation auprès de la CNIL
             (www.cnil.fr).
           </p>
@@ -97,8 +100,9 @@ export default function PrivacyPage() {
         <section>
           <h2 className="font-serif text-xl font-medium text-ink-900">Cookies</h2>
           <p className="mt-2">
-            Ce site utilise uniquement les cookies strictement nécessaires au fonctionnement
-            du panier d&apos;achat. Aucun cookie de tracking publicitaire n&apos;est déposé.
+            Le panier public est conservé dans le stockage local du navigateur. Aucun cookie
+            publicitaire ou outil de mesure d&apos;audience n&apos;est installé. Un cookie de session
+            strictement nécessaire protège uniquement l&apos;espace d&apos;administration.
           </p>
         </section>
       </div>

@@ -3,23 +3,24 @@ import Link from 'next/link';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/faq' },
   title: 'FAQ — Café de Papá',
   description:
-    'Questions fréquentes : torréfaction à la commande, délais de livraison, Click & Collect, paiement sécurisé et conservation du café.',
+    'Questions fréquentes : torréfaction à la commande, délai de préparation, Click & Collect, paiement sécurisé et conservation du café.',
 };
 
 const FAQ_ITEMS = [
   {
-    q: "Quels sont les délais de torréfaction et d'expédition ?",
-    a: "Tous nos cafés sont torréfiés et conditionnés à la commande dans notre atelier du 1 Rue du Poteau, à Paris 18e. Le délai de préparation est de 4 jours ouvrés à compter de la confirmation de votre paiement. Conformément à l'article L. 216-1 du Code de la consommation, la livraison intervient au plus tard dans un délai de 30 jours.",
+    q: "Quel est le délai de torréfaction et de préparation ?",
+    a: "Tous nos cafés sont torréfiés et conditionnés à la commande dans notre atelier du 1 Rue du Poteau, à Paris 18e. Le délai de préparation prévu est de 4 jours ouvrés à compter de la confirmation du paiement.",
   },
   {
-    q: "Quels sont les modes de livraison proposés ?",
-    a: "Deux options s'offrent à vous : la livraison en Point Relais via Mondial Relay (4,50 €, offerte dès 45 € d'achat) et le retrait gratuit en boutique (Click & Collect) au 1 Rue du Poteau, 75018 Paris.",
+    q: "Quel est le mode de retrait proposé ?",
+    a: "Le site propose actuellement uniquement le retrait gratuit en boutique (Click & Collect) au 1 Rue du Poteau, 75018 Paris.",
   },
   {
     q: "Comment fonctionne le Click & Collect ?",
-    a: "Après validation de votre commande, vous recevez un e-mail de confirmation. Sous 4 jours ouvrés, votre commande est prête à être retirée à notre brûlerie historique au 1 Rue du Poteau, Paris 18e. Horaires : Mar - Ven : 10h-13h & 15h30-20h | Sam : 10h-14h & 15h-19h30 | Dim : 10h-13h30 (Fermé le Lundi).",
+    a: "Après validation de votre commande, vous recevez un e-mail de confirmation. La préparation est prévue sous 4 jours ouvrés à notre brûlerie historique au 1 Rue du Poteau, Paris 18e. Un second e-mail vous prévient lorsque le retrait est possible. Horaires : Mar - Ven : 10h-13h & 15h30-20h | Sam : 10h-14h & 15h-19h30 | Dim : 10h-13h30 (Fermé le Lundi).",
   },
   {
     q: "Le paiement est-il sécurisé ?",
@@ -54,7 +55,7 @@ export default function FAQPage() {
         Questions Fréquentes
       </h1>
       <p className="mt-3 text-sm leading-relaxed text-ink-500">
-        Tout ce que vous devez savoir sur nos cafés, thés, accessoires et nos modes de livraison.
+        Tout ce que vous devez savoir sur nos cafés, thés, accessoires et le retrait en boutique.
       </p>
 
       <div className="mt-10 space-y-3">
