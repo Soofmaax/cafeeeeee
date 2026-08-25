@@ -139,8 +139,9 @@ export default function CartDrawer() {
                         <button
                           type="button"
                           onClick={() => updateQuantity(item.variationId, item.quantity + 1)}
+                          disabled={item.quantity >= item.maxQuantity}
                           aria-label={`Augmenter la quantité de ${item.name}`}
-                          className="flex h-11 w-11 items-center justify-center rounded-full border border-ink-300 text-ink-600 transition-colors hover:border-ink-900 hover:text-ink-900"
+                          className="flex h-11 w-11 items-center justify-center rounded-full border border-ink-300 text-ink-600 transition-colors hover:border-ink-900 hover:text-ink-900 disabled:cursor-not-allowed disabled:opacity-40"
                         >
                           <Plus size={16} />
                         </button>
