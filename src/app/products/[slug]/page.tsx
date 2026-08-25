@@ -6,13 +6,18 @@ import ProductImage from '@/components/ProductImage';
 import CrossSell from '@/components/CrossSell';
 import Link from 'next/link';
 import { ArrowLeft, MapPin, Coffee, Gauge, ChefHat } from 'lucide-react';
+import { features } from '@/lib/features';
 
 export async function generateStaticParams() {
+  if (!features.supabase) return [];
+
   const { data } = await supabase.from('products').select('slug');
   return (data ?? []).map((p: { slug: string }) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  if (!features.supabase) return { title: 'Mode aperçu — Café de Papá' };
+
   const { data } = await supabase
     .from('products')
     .select('name, short_description, aromatic_notes, images, category')
@@ -53,6 +58,8 @@ function getImages(product: Product): string[] {
 }
 
 export default async function ProductPage({ params }: { params: { slug: string } }) {
+  if (!features.supabase) notFound();
+
   const { data } = await supabase
     .from('products')
     .select('*')

@@ -3,8 +3,7 @@ import Stripe from 'stripe';
 import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 import type { Product, ProductVariation } from '@/lib/supabase';
 import { sendCustomerConfirmationEmail, sendAdminNotificationEmail } from '@/lib/email';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+import { features } from '@/lib/features';
 
 interface ValidatedItem {
   productId: string;
@@ -16,6 +15,11 @@ interface ValidatedItem {
 }
 
 export async function POST(req: NextRequest) {
+  if (!features.stripe || !features.supabase) {
+    return NextResponse.json({ error: 'Services externes désactivés.' }, { status: 503 });
+  }
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   try {
     const payload = await req.text();
     const signature = req.headers.get('stripe-signature');

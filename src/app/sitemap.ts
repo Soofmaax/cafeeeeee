@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { supabase } from '@/lib/supabase';
+import { features } from '@/lib/features';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://cafedepapa.fr';
@@ -16,10 +17,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   ];
 
-  const { data: products } = await supabase
+  const { data: products } = features.supabase ? await supabase
     .from('products')
     .select('slug, created_at')
-    .order('created_at', { ascending: true });
+    .order('created_at', { ascending: true }) : { data: [] };
 
   const productRoutes: MetadataRoute.Sitemap = (products ?? []).map((p: { slug: string; created_at: string }) => ({
     url: `${baseUrl}/products/${p.slug}`,
