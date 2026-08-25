@@ -40,6 +40,7 @@ export default function StoresSection() {
 
 function StoreCard({ store }: { store: Store }) {
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${store.mapQuery}`;
+  const phoneNumbers = store.phone.split('/').map((phone) => phone.trim());
 
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md">
@@ -79,12 +80,19 @@ function StoreCard({ store }: { store: Store }) {
           </div>
           <div className="flex items-start gap-2.5">
             <Phone size={16} className="mt-0.5 shrink-0 text-ink-400" />
-            <a
-              href={`tel:${store.phone.replace(/\s/g, '')}`}
-              className="transition-colors hover:text-ink-900"
-            >
-              {store.phone}
-            </a>
+            <span>
+              {phoneNumbers.map((phone, index) => (
+                <span key={phone}>
+                  {index > 0 && ' / '}
+                  <a
+                    href={`tel:${phone.replace(/\s/g, '')}`}
+                    className="transition-colors hover:text-ink-900"
+                  >
+                    {phone}
+                  </a>
+                </span>
+              ))}
+            </span>
           </div>
         </div>
 

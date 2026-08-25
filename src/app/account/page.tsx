@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { formatPrice } from '@/lib/format';
-import { Mail, Package, Store } from 'lucide-react';
+import { KeyRound, Package, Store } from 'lucide-react';
 
 interface OrderItem {
   productId: string;
@@ -32,7 +32,7 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default function AccountPage() {
-  const [email, setEmail] = useState('');
+  const [orderToken, setOrderToken] = useState('');
   const [orders, setOrders] = useState<OrderResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,15 +40,19 @@ export default function AccountPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim()) return;
+    if (!orderToken.trim()) return;
     setLoading(true);
     setError(null);
 
     try {
-      const res = await fetch(`/api/orders?email=${encodeURIComponent(email)}`);
+      const res = await fetch('/api/orders/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: orderToken.trim() }),
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur');
-      setOrders(data.orders || []);
+      setOrders(data.found && data.order ? [data.order] : []);
       setSearched(true);
     } catch {
       setError('Impossible de récupérer vos commandes');
@@ -61,21 +65,21 @@ export default function AccountPage() {
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="font-serif text-3xl font-medium text-ink-900 sm:text-4xl">Mon compte</h1>
       <p className="mt-3 text-ink-600">
-        Saisissez votre adresse e-mail pour consulter l'historique de vos commandes.
+        Utilisez le jeton sécurisé figurant dans votre lien de confirmation pour consulter votre commande.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Mail
+          <KeyRound
             size={18}
             className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-400"
           />
           <input
-            type="email"
+            type="password"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Votre adresse e-mail"
+            value={orderToken}
+            onChange={(e) => setOrderToken(e.target.value)}
+            placeholder="Jeton sécurisé de la commande"
             className="w-full rounded-full border border-ink-300 bg-white py-3.5 pl-12 pr-4 text-sm text-ink-900 placeholder-ink-400 outline-none transition-colors focus:border-ink-900"
           />
         </div>
@@ -110,7 +114,6 @@ export default function AccountPage() {
                   month: 'long',
                   year: 'numeric',
                 });
-                const isMondialRelay = order.shippingType === 'mondial_relay';
                 return (
                   <div key={order.id} className="rounded-xl border border-ink-200 bg-white p-6">
                     <div className="flex items-center justify-between border-b border-ink-200 pb-4">
@@ -143,11 +146,9 @@ export default function AccountPage() {
                       ))}
                     </ul>
                     <div className="mt-4 flex items-center gap-2 border-t border-ink-200 pt-3 text-sm text-ink-500">
-                      {isMondialRelay ? <Package size={16} /> : <Store size={16} />}
+                      <Store size={16} />
                       <span>
-                        {isMondialRelay ? 'Point Relais (Mondial Relay)' : 'Retrait en boutique'}
-                        {' — '}
-                        {order.shippingCost === 0 ? 'Livraison offerte' : formatPrice(order.shippingCost)}
+                        Retrait en boutique — gratuit
                       </span>
                     </div>
                   </div>
