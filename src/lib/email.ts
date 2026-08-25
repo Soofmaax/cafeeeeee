@@ -1,5 +1,6 @@
 import { formatPrice } from '@/lib/format';
 import { PICKUP_STORE } from '@/data/stores';
+import { features } from '@/lib/features';
 
 interface OrderItem {
   productId: string;
@@ -35,7 +36,7 @@ const FROM_EMAIL = process.env.FROM_EMAIL || 'noreply@cafedepapa.fr';
 async function sendEmail({ to, subject, html }: SendEmailParams): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
 
-  if (apiKey) {
+  if (features.email && apiKey) {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
