@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { supabase, type Product } from '@/lib/supabase';
+import { getSupabaseClient, type Product } from '@/lib/supabase';
 import AddToCart from '@/components/AddToCart';
 import ProductImage from '@/components/ProductImage';
 import CrossSell from '@/components/CrossSell';
@@ -8,11 +8,16 @@ import Link from 'next/link';
 import { ArrowLeft, MapPin, Coffee, Gauge, ChefHat } from 'lucide-react';
 
 export async function generateStaticParams() {
+  const supabase = getSupabaseClient();
+  if (!supabase) return [];
   const { data } = await supabase.from('products').select('slug');
   return (data ?? []).map((p: { slug: string }) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return { title: 'Produit introuvable — Café de Papá' };
+
   const { data } = await supabase
     .from('products')
     .select('name, short_description, aromatic_notes, images, category')
@@ -32,6 +37,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title,
     description,
+    alternates: { canonical: `/products/${params.slug}` },
     openGraph: {
       title,
       description,
@@ -53,6 +59,9 @@ function getImages(product: Product): string[] {
 }
 
 export default async function ProductPage({ params }: { params: { slug: string } }) {
+  const supabase = getSupabaseClient();
+  if (!supabase) notFound();
+
   const { data } = await supabase
     .from('products')
     .select('*')

@@ -1,0 +1,40 @@
+name: Apply Supabase migrations
+
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supabase-migrations-dfeksjezhyqlgalspypq
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: Validate and apply migrations
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link Supabase project
+        run: supabase link --project-ref dfeksjezhyqlgalspypq --password "$SUPABASE_DB_PASSWORD"
+
+      - name: List migrations
+        run: supabase migration list --linked
+
+      - name: Validate migration push
+        run: supabase db push --linked --dry-run
+
+      - name: Apply migrations
+        run: supabase db push --linked

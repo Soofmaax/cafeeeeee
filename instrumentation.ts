@@ -1,3 +1,4 @@
 export async function register() {
-  // No local DB initialization needed — data is stored in Supabase (PostgreSQL).
+  // Runtime initialization is handled by Next.js. Configuration validation runs
+  // before both build and start through scripts/validate-config.mjs.
 }

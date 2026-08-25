@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { supabase, type Product } from '@/lib/supabase';
+import { getSupabaseClient, type Product } from '@/lib/supabase';
 import CategoryPageClient from '@/components/CategoryPageClient';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/thes' },
   title: 'Nos Thés — Café de Papá',
   description:
     'Une sélection de thés fins et infusions : thés noirs, thés verts, jasmin, Earl Grey, Lapsang fumé. Filtres par famille et origine.',
@@ -13,10 +14,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ThesPage() {
-  const { data } = await supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: true });
+  const supabase = getSupabaseClient();
+  const { data } = supabase
+    ? await supabase.from('products').select('*').order('created_at', { ascending: true })
+    : { data: [] };
 
   const allProducts = (data ?? []) as Product[];
   const products = allProducts.filter((p) => p.category === 'Thé');
