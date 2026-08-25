@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { supabase, type Product } from '@/lib/supabase';
+import { features } from '@/lib/features';
 import CategoryPageClient from '@/components/CategoryPageClient';
 
 export const metadata: Metadata = {
@@ -13,10 +14,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ThesPage() {
-  const { data } = await supabase
+  const { data } = features.supabase ? await supabase
     .from('products')
     .select('*')
-    .order('created_at', { ascending: true });
+    .order('created_at', { ascending: true }) : { data: [] };
 
   const allProducts = (data ?? []) as Product[];
   const products = allProducts.filter((p) => p.category === 'Thé');
