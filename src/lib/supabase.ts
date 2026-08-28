@@ -1,9 +1,24 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+let client: SupabaseClient | null | undefined;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+/**
+ * Returns the public client only when its environment variables are available.
+ * This keeps preview deployments and production builds usable before secrets are
+ * configured; catalog queries can then gracefully render an empty state.
+ */
+export function getSupabaseClient(): SupabaseClient | null {
+  if (client !== undefined) return client;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  client = supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey)
+    : null;
+
+  return client;
+}
 
 export interface ProductVariation {
   id: string;

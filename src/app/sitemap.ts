@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next';
-import { supabase } from '@/lib/supabase';
+import { getSupabaseClient } from '@/lib/supabase';
+import { getPublicAppUrl } from '@/lib/app-url';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://cafedepapa.fr';
+  const baseUrl = getPublicAppUrl();
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${baseUrl}/`, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
@@ -16,10 +17,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   ];
 
-  const { data: products } = await supabase
-    .from('products')
-    .select('slug, created_at')
-    .order('created_at', { ascending: true });
+  const supabase = getSupabaseClient();
+  const { data: products } = supabase
+    ? await supabase.from('products').select('slug, created_at').order('created_at', { ascending: true })
+    : { data: [] };
 
   const productRoutes: MetadataRoute.Sitemap = (products ?? []).map((p: { slug: string; created_at: string }) => ({
     url: `${baseUrl}/products/${p.slug}`,

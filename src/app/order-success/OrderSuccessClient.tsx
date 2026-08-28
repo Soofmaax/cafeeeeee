@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { formatPrice } from '@/lib/format';
-import { CheckCircle2, Store, Phone, Package, Loader2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, Store, Phone, Loader2, AlertCircle } from 'lucide-react';
 import { PICKUP_STORE } from '@/data/stores';
 
 const MAX_RETRIES = 5;
@@ -37,7 +37,7 @@ interface LookupResponse {
   } | null;
 }
 
-export default function OrderSuccessClient({ sessionId }: { sessionId: string }) {
+export default function OrderSuccessClient({ orderToken }: { orderToken: string }) {
   const [order, setOrder] = useState<LookupResponse['order'] | null>(null);
   const [customer, setCustomer] = useState<LookupResponse['customer']>(null);
   const [items, setItems] = useState<OrderItem[]>([]);
@@ -54,7 +54,11 @@ export default function OrderSuccessClient({ sessionId }: { sessionId: string })
         setRetryCount(attempt + 1);
 
         try {
-          const res = await fetch(`/api/orders/lookup?session_id=${encodeURIComponent(sessionId)}`);
+          const res = await fetch('/api/orders/lookup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: orderToken }),
+          });
           if (!res.ok) throw new Error('Lookup failed');
           const data: LookupResponse = await res.json();
 
@@ -83,7 +87,7 @@ export default function OrderSuccessClient({ sessionId }: { sessionId: string })
     return () => {
       cancelled = true;
     };
-  }, [sessionId]);
+  }, [orderToken]);
 
   // --- Polling state ---
   if (status === 'polling') {
@@ -146,10 +150,6 @@ export default function OrderSuccessClient({ sessionId }: { sessionId: string })
     year: 'numeric',
   });
 
-  const isMondialRelay = order.shippingType === 'mondial_relay';
-  const isPickup = order.shippingType === 'pickup';
-  const delivery = order.relayInfo;
-
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center">
@@ -163,7 +163,7 @@ export default function OrderSuccessClient({ sessionId }: { sessionId: string })
           Merci {customer ? `${customer.firstName ?? ''} ${customer.lastName ?? ''}`.trim() : ''} ! Votre commande a bien été enregistrée.
         </p>
         <p className="mt-2 text-sm text-ink-500">
-          Votre commande est entrée en préparation artisanale. Elle sera expédiée ou disponible au retrait sous 4 jours ouvrés.
+          Votre commande est entrée en préparation artisanale, prévue sous 4 jours ouvrés.
         </p>
       </div>
 
@@ -190,16 +190,12 @@ export default function OrderSuccessClient({ sessionId }: { sessionId: string })
 
         <div className="mt-5 space-y-2 border-t border-ink-200 pt-4 text-sm">
           <div className="flex justify-between">
-            <span className="text-ink-600">Livraison</span>
-            <span className="font-medium text-ink-900">
-              {isMondialRelay ? 'Point Relais (Mondial Relay)' : 'Retrait en boutique'}
-            </span>
+            <span className="text-ink-600">Mode de retrait</span>
+            <span className="font-medium text-ink-900">Click &amp; Collect</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-ink-600">Frais de livraison</span>
-            <span className="font-medium text-ink-900">
-              {order.shippingCost === 0 ? 'Offerte' : formatPrice(order.shippingCost)}
-            </span>
+            <span className="text-ink-600">Frais de retrait</span>
+            <span className="font-medium text-ink-900">Gratuit</span>
           </div>
           <div className="flex justify-between border-t border-ink-200 pt-3">
             <span className="font-medium text-ink-900">Total</span>
@@ -209,26 +205,8 @@ export default function OrderSuccessClient({ sessionId }: { sessionId: string })
           </div>
         </div>
 
-        {/* Mondial Relay info */}
-        {isMondialRelay && delivery && (
-          <div className="mt-6 rounded-lg bg-ink-900 px-5 py-4 text-sm text-ink-50">
-            <div className="flex items-start gap-3">
-              <Package size={20} className="mt-0.5 shrink-0 text-accent-400" />
-              <div>
-                <p className="font-medium">Point Relais sélectionné</p>
-                <p className="mt-1 text-ink-200">{delivery.name}</p>
-                <p className="text-ink-300">{delivery.address}</p>
-              </div>
-            </div>
-            <p className="mt-4 border-t border-ink-700 pt-3 text-ink-300">
-              Vous recevrez un e-mail et un SMS dès l&apos;arrivée de votre colis au relais.
-            </p>
-          </div>
-        )}
-
         {/* Pickup info */}
-        {isPickup && (
-          <div className="mt-6 rounded-lg bg-ink-900 px-5 py-4 text-sm text-ink-50">
+        <div className="mt-6 rounded-lg bg-ink-900 px-5 py-4 text-sm text-ink-50">
             <div className="flex items-start gap-3">
               <Store size={20} className="mt-0.5 shrink-0 text-accent-400" />
               <div>
@@ -239,10 +217,9 @@ export default function OrderSuccessClient({ sessionId }: { sessionId: string })
               </div>
             </div>
             <p className="mt-4 border-t border-ink-700 pt-3 text-ink-300">
-              Présentez votre numéro de commande en boutique lors du retrait.
+              Attendez l&apos;e-mail confirmant que la commande est prête avant votre déplacement.
             </p>
-          </div>
-        )}
+        </div>
 
         {/* Customer contact */}
         {customer && (

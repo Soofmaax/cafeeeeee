@@ -16,7 +16,7 @@ export default function AddToCart({ product }: { product: Product }) {
   const variations = product.variations ?? [];
   const hasVariations = variations.length > 0;
 
-  const firstVariation = variations[0];
+  const firstVariation = variations.find((variation) => variation.stock > 0) ?? variations[0];
   const [selectedVariationId, setSelectedVariationId] = useState(
     hasVariations ? firstVariation?.id ?? '' : '',
   );
@@ -39,6 +39,7 @@ export default function AddToCart({ product }: { product: Product }) {
   const totalPriceCents = priceCents * quantity;
 
   function handleAddToCart() {
+    if (stock < 1) return;
     addItem(
       {
         productId: product.id,
@@ -49,6 +50,7 @@ export default function AddToCart({ product }: { product: Product }) {
         priceCents,
         image: getImage(product),
         weight: weightLabel,
+        maxQuantity: stock,
       },
       quantity,
     );
@@ -80,12 +82,16 @@ export default function AddToCart({ product }: { product: Product }) {
                 <button
                   key={v.id}
                   type="button"
-                  onClick={() => setSelectedVariationId(v.id)}
+                  onClick={() => {
+                    setSelectedVariationId(v.id);
+                    setQuantity((current) => Math.min(current, Math.max(1, v.stock)));
+                  }}
+                  disabled={v.stock < 1}
                   aria-pressed={isSelected}
                   className={`min-h-11 rounded-full border px-5 py-2.5 text-sm font-medium transition-all duration-200 ease-in-out ${
                     isSelected
                       ? 'border-ink-900 bg-ink-900 text-ink-50'
-                      : 'border-ink-300 text-ink-700 hover:border-ink-900'
+                      : 'border-ink-300 text-ink-700 hover:border-ink-900 disabled:cursor-not-allowed disabled:opacity-40'
                   }`}
                 >
                   {v.attribute}
@@ -114,9 +120,10 @@ export default function AddToCart({ product }: { product: Product }) {
           </span>
           <button
             type="button"
-            onClick={() => setQuantity((q) => q + 1)}
+            onClick={() => setQuantity((q) => Math.min(stock, q + 1))}
+            disabled={quantity >= stock}
             aria-label="Augmenter la quantité"
-            className="flex h-11 w-11 items-center justify-center text-ink-600 transition-colors hover:text-ink-900"
+            className="flex h-11 w-11 items-center justify-center text-ink-600 transition-colors hover:text-ink-900 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <span className="text-lg" aria-hidden="true">+</span>
           </button>
@@ -124,10 +131,11 @@ export default function AddToCart({ product }: { product: Product }) {
         <button
           type="button"
           onClick={handleAddToCart}
+          disabled={stock < 1}
           className={`flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full py-3.5 text-sm font-semibold uppercase tracking-wider text-ink-50 transition-all duration-200 ease-in-out ${
             added
               ? 'bg-green-700 animate-check-pop'
-              : 'bg-ink-900 hover:bg-ink-800'
+              : 'bg-ink-900 hover:bg-ink-800 disabled:cursor-not-allowed disabled:opacity-40'
           }`}
         >
           {added ? (
@@ -137,7 +145,7 @@ export default function AddToCart({ product }: { product: Product }) {
             </>
           ) : (
             <>
-              Ajouter au panier
+              {stock < 1 ? 'Rupture de stock' : 'Ajouter au panier'}
               <span className="ml-1 normal-case tracking-normal">
                 · {formatPrice(totalPriceCents)}
               </span>
@@ -147,7 +155,7 @@ export default function AddToCart({ product }: { product: Product }) {
       </div>
 
       <p className="mt-4 text-sm text-ink-600">
-        ☕ Torréfaction artisanale à Paris 18e — Expédié sous 4 jours ouvrés.
+        ☕ Torréfaction artisanale à Paris 18e — préparation sous 4 jours ouvrés.
       </p>
 
       {stock > 0 && stock <= 10 && (

@@ -8,4 +8,5 @@ export interface CartItem {
   image: string;
   quantity: number;
   weight: string;
+  maxQuantity: number;
 }
