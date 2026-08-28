@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { supabase, type Product } from '@/lib/supabase';
+import { getSupabaseClient, type Product } from '@/lib/supabase';
 import CategoryPageClient from '@/components/CategoryPageClient';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/accessoires' },
   title: 'Accessoires — Café de Papá',
   description:
     "Cafetières à piston, cafetières italiennes Moka et accessoires pour préparer le café comme un barista. Filtres par méthode d'extraction.",
@@ -13,10 +14,10 @@ export const metadata: Metadata = {
 };
 
 export default async function AccessoiresPage() {
-  const { data } = await supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: true });
+  const supabase = getSupabaseClient();
+  const { data } = supabase
+    ? await supabase.from('products').select('*').order('created_at', { ascending: true })
+    : { data: [] };
 
   const allProducts = (data ?? []) as Product[];
   const products = allProducts.filter((p) => p.category === 'Cafetières');
@@ -25,7 +26,7 @@ export default async function AccessoiresPage() {
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
       <header className="mb-10 max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-accent-600">
-          L'art de la préparation
+          L&apos;art de la préparation
         </p>
         <h1 className="mt-3 font-serif text-3xl font-medium text-ink-900 sm:text-4xl">
           Accessoires

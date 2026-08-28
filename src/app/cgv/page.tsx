@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/cgv' },
   title: 'Conditions Générales de Vente — Café de Papá',
   description:
-    'CGV de Café de Papá, exploité par FINCA LA CAMPINA SARL : commande, prix, paiement Stripe, livraison et droit de rétractation.',
+    'CGV de Café de Papá, exploité par FINCA LA CAMPINA SARL : commande, prix, paiement Stripe, retrait et droit de rétractation.',
 };
 
 export default function CGVPage() {
@@ -36,7 +37,7 @@ export default function CGVPage() {
             <li><strong>RCS :</strong> Paris 535 001 069</li>
             <li><strong>N° de TVA intracommunautaire :</strong> FR91535001069</li>
             <li><strong>Code APE / NAF :</strong> 4637Z (Commerce de café, thé, cacao et épices)</li>
-            <li><strong>Contact :</strong> cafefincalacampina@outlook.fr | Tél : 01 46 06 51 75 / 06 99 76 12 76</li>
+            <li><strong>Contact :</strong> admin.cafedepapa@gmail.com | Tél : 01 46 06 51 75 / 06 99 76 12 76</li>
           </ul>
         </section>
 
@@ -61,10 +62,8 @@ export default function CGVPage() {
         <section>
           <h2 className="font-serif text-xl font-medium text-ink-900">Article 4 — Prix</h2>
           <p className="mt-2">
-            Tous les prix sont indiqués en euros, toutes taxes comprises (TTC). Les frais de
-            livraison sont indiqués séparément et sont offerts à partir de 45 € d&apos;achat pour
-            la livraison en Point Relais (Mondial Relay). Le retrait en boutique (Click &amp; Collect)
-            est gratuit.
+            Tous les prix sont indiqués en euros, toutes taxes comprises (TTC). Le retrait en
+            boutique (Click &amp; Collect), seul mode proposé actuellement, est gratuit.
           </p>
         </section>
 
@@ -78,40 +77,33 @@ export default function CGVPage() {
         </section>
 
         <section>
-          <h2 className="font-serif text-xl font-medium text-ink-900">Article 6 — Préparation, Livraison &amp; Délais</h2>
+          <h2 className="font-serif text-xl font-medium text-ink-900">Article 6 : Préparation, retrait et délais</h2>
           <p className="mt-2">
             Afin de garantir une fraîcheur absolue, nos cafés sont torréfiés et conditionnés à la commande.
           </p>
           <div className="mt-3 rounded-lg bg-ink-50 p-4">
-            <p className="font-medium text-ink-900">Délais de préparation et livraison</p>
+            <p className="font-medium text-ink-900">Délai de préparation</p>
             <ul className="mt-2 space-y-1.5 text-sm">
               <li>
-                <strong>Délai de préparation / expédition :</strong> 4 jours ouvrés à compter de la confirmation de paiement.
-              </li>
-              <li>
-                <strong>Délai légal maximal :</strong> Conformément à l&apos;article L. 216-1 du Code de la consommation, la livraison intervient au plus tard dans un délai de 30 jours à compter de la conclusion du contrat.
+                <strong>Délai prévu :</strong> 4 jours ouvrés à compter de la confirmation de paiement.
               </li>
             </ul>
           </div>
           <p className="mt-3">
-            Deux modes de livraison sont proposés :
+            Le mode de retrait suivant est proposé :
           </p>
           <ul className="mt-2 list-disc space-y-1 pl-6">
-            <li>
-              <strong>Point Relais (Mondial Relay) — 4,50 €</strong> : expédition sous 4 jours ouvrés,
-              puis livraison dans le point relais de votre choix. Un e-mail et un SMS vous informent de
-              l&apos;arrivée du colis. <strong>Offerte dès 45 € d&apos;achat.</strong>
-            </li>
             <li>
               <strong>Retrait en boutique (Click &amp; Collect) — Gratuit</strong> : retrait exclusivement
               à notre brûlerie historique, 1 Rue du Poteau, 75018 Paris. Horaires d&apos;ouverture :
               Mar - Ven : 10h-13h &amp; 15h30-20h | Sam : 10h-14h &amp; 15h-19h30 | Dim : 10h-13h30
-              (Fermé le Lundi). Disponible sous 4 jours ouvrés.
+              (Fermé le Lundi). Préparation prévue sous 4 jours ouvrés ; le client est invité à
+              contacter la boutique avant son déplacement.
             </li>
           </ul>
           <p className="mt-2">
-            Les délais indiqués sont donnés à titre indicatif. Café de Papá ne saurait être tenu
-            responsable des retards imputables aux transporteurs.
+            Un e-mail est envoyé lorsque la commande est prête. Le client doit attendre cette
+            confirmation avant de se déplacer.
           </p>
         </section>
 
@@ -133,7 +125,7 @@ export default function CGVPage() {
           <p className="mt-2">
             Café de Papá garantit la conformité des produits vendus. En cas de produit non
             conforme ou défectueux, l&apos;acheteur peut contacter Café de Papá par e-mail
-            à l&apos;adresse cafefincalacampina@outlook.fr dans un délai de 48h suivant la réception
+            à l&apos;adresse admin.cafedepapa@gmail.com dans un délai de 48h suivant la réception
             pour obtenir un remboursement ou un échange.
           </p>
         </section>

@@ -3,12 +3,16 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/mentions-legales' },
   title: 'Mentions Légales — Café de Papá',
   description:
     "Mentions légales de Café de Papá, exploité par FINCA LA CAMPINA SARL : éditeur, hébergement, coordonnées et contact.",
 };
 
 export default function LegalMentionsPage() {
+  const hostName = process.env.LEGAL_HOST_NAME || 'Hébergeur de la prévisualisation';
+  const hostAddress = process.env.LEGAL_HOST_ADDRESS || 'Adresse à renseigner avant la mise en production';
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
       <Link
@@ -64,7 +68,7 @@ export default function LegalMentionsPage() {
             <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-3">
               <dt className="font-semibold text-ink-800 sm:w-56 shrink-0">Contact</dt>
               <dd>
-                <a href="mailto:cafefincalacampina@outlook.fr" className="text-ink-900 underline underline-offset-2">cafefincalacampina@outlook.fr</a>
+                <a href="mailto:admin.cafedepapa@gmail.com" className="text-ink-900 underline underline-offset-2">admin.cafedepapa@gmail.com</a>
                 <br />
                 Tél : 01 46 06 51 75 / 06 99 76 12 76
               </dd>
@@ -75,7 +79,7 @@ export default function LegalMentionsPage() {
         <section>
           <h2 className="font-serif text-xl font-medium text-ink-900">Hébergement</h2>
           <p className="mt-2">
-            Le site est hébergé par Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.
+            Le site est hébergé par {hostName}, {hostAddress}.
           </p>
         </section>
 
@@ -110,8 +114,8 @@ export default function LegalMentionsPage() {
           <p className="mt-2">
             Pour toute question relative au site ou à nos produits, vous pouvez nous contacter à
             l&apos;adresse :{' '}
-            <a href="mailto:cafefincalacampina@outlook.fr" className="text-ink-900 underline underline-offset-2">
-              cafefincalacampina@outlook.fr
+            <a href="mailto:admin.cafedepapa@gmail.com" className="text-ink-900 underline underline-offset-2">
+              admin.cafedepapa@gmail.com
             </a>{' '}
             ou par téléphone au 01 46 06 51 75 / 06 99 76 12 76.
           </p>

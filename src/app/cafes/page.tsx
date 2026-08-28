@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { supabase, type Product } from '@/lib/supabase';
+import { getSupabaseClient, type Product } from '@/lib/supabase';
 import CategoryPageClient from '@/components/CategoryPageClient';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/cafes' },
   title: 'Nos Cafés — Café de Papá',
   description:
     'Découvrez notre sélection de cafés de spécialité 100% Arabica, torréfiés artisanalement à Paris. Filtres par origine, intensité et type (grains, moulu, décaféiné).',
@@ -14,10 +15,10 @@ export const metadata: Metadata = {
 };
 
 export default async function CafesPage() {
-  const { data } = await supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: true });
+  const supabase = getSupabaseClient();
+  const { data } = supabase
+    ? await supabase.from('products').select('*').order('created_at', { ascending: true })
+    : { data: [] };
 
   const allProducts = (data ?? []) as Product[];
   const products = allProducts.filter((p) => p.category === 'Café');
@@ -33,7 +34,7 @@ export default async function CafesPage() {
         </h1>
         <p className="mt-4 text-base leading-relaxed text-ink-600">
           Des grains 100% Arabica issus de fermes partenaires triées avec soin, torréfiés
-          lentement à Paris 18e et expédiés frais sous 4 jours ouvrés. Choisissez par terroir,
+          lentement à Paris 18e et préparés sous 4 jours ouvrés. Choisissez par terroir,
           par intensité, ou laissez-vous guider par nos notes de dégustation.
         </p>
       </header>
